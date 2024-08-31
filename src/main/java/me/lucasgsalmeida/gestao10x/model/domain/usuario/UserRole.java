@@ -1,6 +1,8 @@
 package me.lucasgsalmeida.gestao10x.model.domain.usuario;
 
 public enum UserRole {
+
+    MASTER("master"),
     ADMIN("admin"),
     USER("user");
 

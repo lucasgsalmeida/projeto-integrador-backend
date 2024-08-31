@@ -47,14 +47,26 @@ public class Usuario implements UserDetails {
         this.role = dto.role();
     }
 
+    public Usuario(Long idEscritorio, String nome, String usuario, String senha, UserRole role) {
+        this.idEscritorio = idEscritorio;
+        this.nome = nome;
+        this.usuario = usuario;
+        this.senha = senha;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.USER) {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+
         if (this.role == UserRole.ADMIN) {
             return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         }
 
-        if (this.role == UserRole.USER) {
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.MASTER) {
+            return List.of(new SimpleGrantedAuthority("ROLE_MASTER"), new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
