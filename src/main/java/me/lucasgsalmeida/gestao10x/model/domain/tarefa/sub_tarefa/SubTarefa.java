@@ -31,8 +31,11 @@ public class SubTarefa {
     @JoinColumn(table = "Projeto", name = "id_projeto", referencedColumnName = "id")
     private Long idProjeto;
 
-    @JoinColumn(table = "ResponsavelDepartamentoProjeto", name = "id_rdp", referencedColumnName = "id")
-    private Long id_rdp;
+    @JoinColumn(table = "Usuario", name = "id_usuario", referencedColumnName = "id")
+    private Long idUsuario;
+
+    @JoinColumn(table = "Departamento", name = "id_departamento", referencedColumnName = "id")
+    private Long idDepartamento;
 
     private StatusTarefa statusTarefa;
 
@@ -40,9 +43,9 @@ public class SubTarefa {
     private Date dataFim;
 
     public SubTarefa(SubTarefaRequestDTO dto) {
-        this.idTarefa = dto.idTarefa();
         this.idProjeto = dto.idProjeto();
-        this.id_rdp = dto.id_rdp();
+        this.idUsuario = dto.idUsuario();
+        this.idDepartamento = dto.idDepartamento();
         this.statusTarefa = dto.statusTarefa();
         this.dataInicio = dto.dataInicio();
         this.dataFim = dto.dataFim();

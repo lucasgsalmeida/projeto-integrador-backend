@@ -25,12 +25,15 @@ public class TipoTarefa {
     @JoinColumn(table = "Escritorio", name = "id_escritorio", referencedColumnName = "id")
     private Long idEscritorio;
 
+    private String nome;
+
     @OneToMany
     private List<DepartamentoOrdem> responsavelDepartamentoProjetos;
 
     private String descricao;
 
     public TipoTarefa(TipoTarefaRequestDTO dto){
+        this.nome = dto.nome();
         this.responsavelDepartamentoProjetos = dto.responsavelDepartamentoProjetos();
         this.descricao = dto.descricao();
     }

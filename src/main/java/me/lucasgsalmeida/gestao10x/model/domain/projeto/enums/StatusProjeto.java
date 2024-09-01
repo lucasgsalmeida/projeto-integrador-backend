@@ -5,7 +5,7 @@ public enum StatusProjeto {
     ATIVO("1"),
     PAUSADO("2"),
     ENCERRAMENTO("3"),
-    ENCERRADO("5");
+    ENCERRADO("4");
 
     private String status;
 

@@ -11,6 +11,6 @@ import java.util.List;
 public record ProjetoResponseDTO(Long id, Long idEscritorio, String nome, StatusProjeto status, PrioridadeProjeto prioridade, TipoServicoProjeto tipoServico, List<ResponsavelDepartamentoProjeto> rdp, Date dataInicio, String orcamentoMensal, String observacao) {
 
     public ProjetoResponseDTO(Projeto projeto) {
-        this(projeto.getId(), projeto.getIdEscritorio(), projeto.getNome(), projeto.getStatus(), projeto.getPrioridade(), projeto.getTipoServicoProjeto(), projeto.getResponsavelDepartamentoProjetos(), projeto.getDataInicio(), projeto.getOrcamentoMensal(), projeto.getObservacao());
+        this(projeto.getId(), projeto.getIdEscritorio(), projeto.getNome(), projeto.getStatus(), projeto.getPrioridade(), projeto.getTipoServicoProjeto(), projeto.getRdp(), projeto.getDataInicio(), projeto.getOrcamentoMensal(), projeto.getObservacao());
     }
 }

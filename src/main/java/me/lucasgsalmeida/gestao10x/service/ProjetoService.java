@@ -46,6 +46,8 @@ public class ProjetoService {
         Projeto projeto = new Projeto(data);
         projeto.setIdEscritorio(user.getIdEscritorio());
 
+        System.out.println(data.rdp());
+
         rdpRepository.saveAll(data.rdp());
         repository.save(projeto);
         return ResponseEntity.ok().build();

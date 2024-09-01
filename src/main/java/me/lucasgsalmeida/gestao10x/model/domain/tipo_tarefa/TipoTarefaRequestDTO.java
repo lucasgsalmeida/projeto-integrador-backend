@@ -4,5 +4,5 @@ import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.departamento_ordem.D
 
 import java.util.List;
 
-public record TipoTarefaRequestDTO(List<DepartamentoOrdem> responsavelDepartamentoProjetos, String descricao) {
+public record TipoTarefaRequestDTO(String nome, List<DepartamentoOrdem> responsavelDepartamentoProjetos, String descricao) {
 }

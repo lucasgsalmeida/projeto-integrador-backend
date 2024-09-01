@@ -9,10 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("usuario")
@@ -37,5 +34,21 @@ public class UsuarioController {
     public ResponseEntity login(@RequestBody @Validated UsuarioResponseDTO data) {
         return service.login(data);
     }
+
+    @GetMapping("/get/id")
+    public ResponseEntity<?> getUsuarioAndCliente(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getUsuarioAndCliente(userDetails);
+    }
+
+    @PostMapping("/verify-token")
+    public ResponseEntity<String> verifyToken(@RequestHeader("Authorization") String authorizationHeader) {
+        return service.verifyToken(authorizationHeader);
+    }
+
+    @GetMapping("/get/all")
+    public ResponseEntity getAllUsuario(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getAllUsuario(userDetails);
+    }
+
 }
 

@@ -17,6 +17,8 @@ public class TarefaController {
 
     @PostMapping("/create")
     public ResponseEntity createTarefa(@RequestBody TarefaRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+
+        System.out.println("\n\n" + data + "\n\n");
         return service.createTarefa(data, userDetails);
     }
 

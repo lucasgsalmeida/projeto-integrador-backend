@@ -4,6 +4,7 @@ import me.lucasgsalmeida.gestao10x.infra.UsuarioStateCache;
 import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.TipoTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.TipoTarefaRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.TipoTarefaResponseDTO;
+import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.departamento_ordem.DepartamentoOrdem;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.Usuario;
 import me.lucasgsalmeida.gestao10x.model.repository.DepartamentoOrdemRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.TipoTarefaRepository;
@@ -28,6 +29,8 @@ public class TipoTarefaService {
 
     public ResponseEntity createTipoTarefa(TipoTarefaRequestDTO data, UserDetails userDetails) {
 
+        System.out.println("\n\n" + data.responsavelDepartamentoProjetos().toString() + "\n\n");
+
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
 
         if (user == null) {
@@ -40,7 +43,14 @@ public class TipoTarefaService {
 
         TipoTarefa tipoTarefa = new TipoTarefa(data);
         tipoTarefa.setIdEscritorio(user.getIdEscritorio());
-        ordemRepository.saveAll(data.responsavelDepartamentoProjetos());
+
+        List<DepartamentoOrdem> departamentoOrdems = data.responsavelDepartamentoProjetos();
+
+        for (DepartamentoOrdem ordem : departamentoOrdems) {
+            ordem.setIdEscritorio(user.getIdEscritorio());
+        }
+
+        ordemRepository.saveAll(departamentoOrdems);
         repository.save(tipoTarefa);
         return ResponseEntity.ok().build();
 

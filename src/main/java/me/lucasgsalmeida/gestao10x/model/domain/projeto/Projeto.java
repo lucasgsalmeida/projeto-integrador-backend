@@ -35,7 +35,7 @@ public class Projeto {
     private TipoServicoProjeto tipoServicoProjeto;
 
     @OneToMany
-    private List<ResponsavelDepartamentoProjeto> responsavelDepartamentoProjetos;
+    private List<ResponsavelDepartamentoProjeto> rdp;
 
     private Date dataInicio;
 
@@ -48,7 +48,7 @@ public class Projeto {
         this.status = dto.status();
         this.prioridade = dto.prioridade();
         this.tipoServicoProjeto = dto.tipoServico();
-        this.responsavelDepartamentoProjetos = dto.rdp();
+        this.rdp = dto.rdp();
         this.dataInicio = dto.dataInicio();
         this.orcamentoMensal = dto.orcamentoMensal();
         this.observacao = dto.observacao();
