@@ -7,6 +7,7 @@ import me.lucasgsalmeida.gestao10x.model.domain.usuario.*;
 import me.lucasgsalmeida.gestao10x.model.repository.EscritorioRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,7 +36,7 @@ public class UsuarioService {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    public ResponseEntity createUsuarioMaster(UsuarioRequestDTO data, UserDetails userDetails) {
+    public ResponseEntity createUsuarioMaster(UsuarioRequestDTO data) {
 
         if(this.repository.findByUsuario(data.usuario()) != null) {
             return ResponseEntity.badRequest().build();
@@ -43,6 +44,25 @@ public class UsuarioService {
 
         String encPass = new BCryptPasswordEncoder().encode(data.senha());
         Usuario users = new Usuario(data.idEscritorio(), data.nome(), data.usuario(), encPass, data.role());
+
+        this.repository.save(users);
+        return ResponseEntity.ok().build();
+    }
+
+    public ResponseEntity createUsuario(UsuarioRequestDTO data, UserDetails userDetails) {
+
+        Usuario userCriador = usuarioStateCache.getUserState(userDetails.getUsername());
+
+        if(this.repository.findByUsuario(data.usuario()) != null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (data.role().equals(UserRole.MASTER)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        String encPass = new BCryptPasswordEncoder().encode(data.senha());
+        Usuario users = new Usuario(userCriador.getIdEscritorio(), data.idDepartamento(), data.nome(), data.usuario(), encPass, data.role());
 
         this.repository.save(users);
         return ResponseEntity.ok().build();

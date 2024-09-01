@@ -55,6 +55,17 @@ public class Usuario implements UserDetails {
         this.role = role;
     }
 
+    public Usuario(Long idEscritorio, Long idDepartamento, String nome, String usuario, String senha, UserRole role) {
+        this.idEscritorio = idEscritorio;
+        this.idDepartamento = idDepartamento;
+        this.nome = nome;
+        this.usuario = usuario;
+        this.senha = senha;
+        this.role = role;
+    }
+
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.USER) {

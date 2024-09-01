@@ -1,4 +1,4 @@
-package me.lucasgsalmeida.gestao10x.model.domain.tarefa.tipo_tarefa;
+package me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.lucasgsalmeida.gestao10x.model.domain.projeto.responsavel_departamento_projeto.ResponsavelDepartamentoProjeto;
+import me.lucasgsalmeida.gestao10x.model.domain.tipo_tarefa.departamento_ordem.DepartamentoOrdem;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class TipoTarefa {
     private Long idEscritorio;
 
     @OneToMany
-    private List<ResponsavelDepartamentoProjeto> responsavelDepartamentoProjetos;
+    private List<DepartamentoOrdem> responsavelDepartamentoProjetos;
 
     private String descricao;
 
