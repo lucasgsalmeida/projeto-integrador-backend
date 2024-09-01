@@ -34,7 +34,7 @@ public class Tarefa {
     private Long id_tipoTarefa;
 
     @OneToMany
-    private List<SubTarefa> listSubTarefa;
+    private List<SubTarefa> subTarefaList;
 
     private PrioridadeTarefa prioridadeTarefa;
 
@@ -47,6 +47,7 @@ public class Tarefa {
     public Tarefa(TarefaRequestDTO dto) {
         this.idProjeto = dto.idProjeto();
         this.id_tipoTarefa = dto.id_tipoTarefa();
+        this.subTarefaList = dto.subTarefaList();
         this.prioridadeTarefa = dto.prioridadeTarefa();
         this.dataInicio = dto.dataInicio();
         this.descricao = dto.descricao();
