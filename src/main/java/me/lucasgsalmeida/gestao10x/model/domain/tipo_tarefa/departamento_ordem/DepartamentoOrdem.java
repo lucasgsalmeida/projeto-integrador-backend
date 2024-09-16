@@ -26,9 +26,12 @@ public class DepartamentoOrdem {
 
     private int ordem;
 
+    private int qtdDias;
+
     public DepartamentoOrdem(DORequestDTO data) {
         this.idDepartamento = data.idDepartamento();
         this.ordem = data.ordem();
+        this.qtdDias = data.qtdDias();
     }
 
 

@@ -44,12 +44,15 @@ public class TarefaService {
         Tarefa tarefa = new Tarefa(data);
         tarefa.setIdEscritorio(user.getIdEscritorio());
 
+        System.out.print(tarefa.toString());
+
         List<SubTarefa> subTarefa = data.subTarefaList();
         for (SubTarefa sub : subTarefa) {
-            sub.setIdTarefa(tarefa.getId());
             sub.setIdEscritorio(user.getIdEscritorio());
+            System.out.println(sub.toString());
         }
-        
+        subTarefaService.createSubTarefa(subTarefa);
+
         repository.save(tarefa);
         return ResponseEntity.ok().build();
 

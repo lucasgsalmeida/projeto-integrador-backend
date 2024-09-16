@@ -9,7 +9,7 @@ import me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.PrioridadeTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.SubTarefa;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -40,6 +40,7 @@ public class Tarefa {
 
     private Date dataInicio;
 
+    @Column(length = 2000)
     private String descricao;
 
     private StatusTarefa status;
@@ -54,4 +55,18 @@ public class Tarefa {
         this.status = dto.status();
         }
 
+    @Override
+    public String toString() {
+        return "Tarefa{" +
+                "id=" + id +
+                ", idEscritorio=" + idEscritorio +
+                ", idProjeto=" + idProjeto +
+                ", id_tipoTarefa=" + id_tipoTarefa +
+                ", subTarefaList=" + subTarefaList +
+                ", prioridadeTarefa=" + prioridadeTarefa +
+                ", dataInicio=" + dataInicio +
+                ", descricao='" + descricao + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
