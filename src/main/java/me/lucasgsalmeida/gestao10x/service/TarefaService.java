@@ -7,14 +7,18 @@ import me.lucasgsalmeida.gestao10x.model.domain.tarefa.Tarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.SubTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.Usuario;
+import me.lucasgsalmeida.gestao10x.model.repository.ComentarioRepository;
+import me.lucasgsalmeida.gestao10x.model.repository.SubTarefaRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.TarefaRepository;
+import me.lucasgsalmeida.gestao10x.model.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TarefaService {
@@ -27,6 +31,15 @@ public class TarefaService {
 
     @Autowired
     private SubTarefaService subTarefaService;
+
+    @Autowired
+    private SubTarefaRepository subTarefaRepository;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
 
     public ResponseEntity createTarefa(TarefaRequestDTO data, UserDetails userDetails) {
@@ -44,7 +57,9 @@ public class TarefaService {
         Tarefa tarefa = new Tarefa(data);
         tarefa.setIdEscritorio(user.getIdEscritorio());
 
-        System.out.print(tarefa.toString());
+        if (tarefa.getComentarios() != null) {
+            comentarioRepository.saveAll(tarefa.getComentarios());
+        }
 
         List<SubTarefa> subTarefa = data.subTarefaList();
         for (SubTarefa sub : subTarefa) {
@@ -58,13 +73,33 @@ public class TarefaService {
 
     }
 
-    public ResponseEntity getTarefaById(Long id, UserDetails userDetails) {
+    public ResponseEntity<List<TarefaResponseDTO>> findTarefasByUsuario(Long idUsuario, UserDetails userDetails) {
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
-        Tarefa tarefa = repository.findTarefa(id, user.getIdEscritorio());
-        TarefaResponseDTO dto = new TarefaResponseDTO(tarefa);
-        return ResponseEntity.ok(dto);
+        Usuario userDestino = usuarioRepository.findUsuario(idUsuario, user.getIdEscritorio());
 
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        if (userDestino != null) {
+            if (!Objects.equals(userDestino.getIdEscritorio(), user.getIdEscritorio())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }
+
+        List<SubTarefa> subTarefas = subTarefaRepository.findByIdUsuario(idUsuario);
+        Set<TarefaResponseDTO> tarefaReturn = new HashSet<>(); // Usando um Set para evitar duplicatas
+
+        for (SubTarefa sub : subTarefas) {
+            TarefaResponseDTO tarefa = repository.findTarefaByUsuario(sub);
+            if (tarefa != null) {
+                tarefaReturn.add(tarefa);
+            }
+        }
+
+        return ResponseEntity.ok(new ArrayList<>(tarefaReturn)); // Converte de volta para List
     }
+
 
     public ResponseEntity getAllTarefa(UserDetails userDetails) {
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());

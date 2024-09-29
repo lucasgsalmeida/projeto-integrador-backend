@@ -28,8 +28,8 @@ public class TarefaController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity getTarefaById(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return service.getTarefaById(id, userDetails);
+    public ResponseEntity findTarefasByUsuario(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.findTarefasByUsuario(id, userDetails);
     }
 
 }

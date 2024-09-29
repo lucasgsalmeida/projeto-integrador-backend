@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "ComentarioSubTarefa")
+@Table(name = "Comentario")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ComentarioSubTarefa {
+public class Comentario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class ComentarioSubTarefa {
     @Column(length = 2000)
     private String mensagem;
 
-    public ComentarioSubTarefa(CSTRequestDTO data) {
+    public Comentario(CSTRequestDTO data) {
         this.mensagem = data.mensagem();
     }
 }

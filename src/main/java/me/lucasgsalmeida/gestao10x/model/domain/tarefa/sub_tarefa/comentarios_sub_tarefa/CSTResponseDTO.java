@@ -2,7 +2,7 @@ package me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.comentarios_s
 
 public record CSTResponseDTO(Long id, Long idUsuario, String mensagem) {
 
-    public CSTResponseDTO(ComentarioSubTarefa data) {
+    public CSTResponseDTO(Comentario data) {
         this(data.getId(), data.getIdUsuario(), data.getMensagem());
     }
 }

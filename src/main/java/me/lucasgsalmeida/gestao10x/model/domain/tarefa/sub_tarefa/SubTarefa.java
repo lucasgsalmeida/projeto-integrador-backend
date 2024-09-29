@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa;
-import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.comentarios_sub_tarefa.ComentarioSubTarefa;
+import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.comentarios_sub_tarefa.Comentario;
 
 import java.sql.Date;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SubTarefa {
     private Date dataFim;
 
     @OneToMany
-    private List<ComentarioSubTarefa> comentarios;
+    private List<Comentario> comentarios;
 
 
 
