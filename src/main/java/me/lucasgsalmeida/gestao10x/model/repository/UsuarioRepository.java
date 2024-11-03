@@ -17,6 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Usuario findUsuario(@Param("id") Long id, @Param("idEscritorio") Long idEscritorio);
 
     @Query("SELECT usuario FROM Usuario usuario WHERE usuario.idEscritorio = :idEscritorio")
-    List<UsuarioAbstractDTO> findUsuarioByEscritorio(@Param("idEscritorio") Long idEscritorio);
+    List<Usuario> findUsuarioByEscritorio(@Param("idEscritorio") Long idEscritorio);
 
 }

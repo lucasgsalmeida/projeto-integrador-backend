@@ -27,4 +27,9 @@ public class EscritorioController {
     public ResponseEntity getEscritorioById(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
         return service.getEscritorioById(id, userDetails);
     }
+
+    @GetMapping()
+    public ResponseEntity getEscritorio(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getEscritorio(userDetails);
+    }
 }

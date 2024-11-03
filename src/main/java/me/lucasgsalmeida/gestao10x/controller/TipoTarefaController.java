@@ -33,6 +33,19 @@ public class TipoTarefaController {
         return service.getTipoTarefaById(id, userDetails);
     }
 
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateTipoTarefa(@PathVariable Long id, @RequestBody TipoTarefaRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.updateTipoTarefa(id, data, userDetails);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteTipoTarefa(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.deleteTipoTarefa(id, userDetails);
+    }
+
+
 
 
 

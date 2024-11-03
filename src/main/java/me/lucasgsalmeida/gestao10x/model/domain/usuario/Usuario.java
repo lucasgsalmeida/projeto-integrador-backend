@@ -27,8 +27,9 @@ public class Usuario implements UserDetails {
     @JoinColumn(table = "Escritorio", name = "id_escritorio", referencedColumnName = "id")
     private Long idEscritorio;
 
-    @JoinColumn(table = "Departamento", name = "id_departamento", referencedColumnName = "id")
-    private Long idDepartamento;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "Usuario_Departamento", joinColumns = @JoinColumn(name = "id_usuario"))
+    private List<Long> idDepartamentos;
 
     private String nome;
 
@@ -40,7 +41,7 @@ public class Usuario implements UserDetails {
 
     public Usuario(UsuarioRequestDTO dto) {
         this.idEscritorio = dto.idEscritorio();
-        this.idDepartamento = dto.idDepartamento();
+        this.idDepartamentos = dto.idDepartamentos(); // Atualização aqui
         this.nome = dto.nome();
         this.usuario = dto.usuario();
         this.senha = dto.senha();
@@ -55,9 +56,9 @@ public class Usuario implements UserDetails {
         this.role = role;
     }
 
-    public Usuario(Long idEscritorio, Long idDepartamento, String nome, String usuario, String senha, UserRole role) {
+    public Usuario(Long idEscritorio, List<Long> idDepartamentos, String nome, String usuario, String senha, UserRole role) {
         this.idEscritorio = idEscritorio;
-        this.idDepartamento = idDepartamento;
+        this.idDepartamentos = idDepartamentos;
         this.nome = nome;
         this.usuario = usuario;
         this.senha = senha;
@@ -112,4 +113,16 @@ public class Usuario implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", idEscritorio=" + idEscritorio +
+                ", idDepartamentos=" + idDepartamentos +
+                ", nome='" + nome + '\'' +
+                ", usuario='" + usuario + '\'' +
+                ", senha='" + senha + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

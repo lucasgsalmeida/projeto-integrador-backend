@@ -1,8 +1,12 @@
 package me.lucasgsalmeida.gestao10x.model.domain.usuario;
 
-public record UsuarioResponseDTO(Long id, Long idEscritorio, Long idDepartamento, String nome, String usuario, String senha, UserRole role) {
+import me.lucasgsalmeida.gestao10x.model.domain.departamento.DepartamentoResponseDTO;
 
-    public UsuarioResponseDTO(Usuario user) {
-        this(user.getId(), user.getIdEscritorio(), user.getIdDepartamento(), user.getNome(), user.getUsuario(), user.getSenha(), user.getRole());
+import java.util.List;
+
+public record UsuarioResponseDTO(Long id, Long idEscritorio, List<DepartamentoResponseDTO> departamentos, String nome, String usuario, String senha, UserRole role) {
+
+    public UsuarioResponseDTO(Usuario user, List<DepartamentoResponseDTO> departamentos) {
+        this(user.getId(), user.getIdEscritorio(), departamentos, user.getNome(), user.getUsuario(), user.getSenha(), user.getRole());
     }
 }

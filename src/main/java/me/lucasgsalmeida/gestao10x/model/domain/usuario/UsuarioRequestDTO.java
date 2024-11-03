@@ -1,4 +1,6 @@
 package me.lucasgsalmeida.gestao10x.model.domain.usuario;
 
-public record UsuarioRequestDTO(Long idEscritorio, Long idDepartamento, String nome, String usuario, String senha, UserRole role) {
+import java.util.List;
+
+public record UsuarioRequestDTO(Long idEscritorio, List<Long> idDepartamentos, String nome, String usuario, String senha, UserRole role) {
 }

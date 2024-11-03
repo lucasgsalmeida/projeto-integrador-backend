@@ -59,4 +59,23 @@ public class EscritorioService {
         EscritorioResponseDTO dto = new EscritorioResponseDTO(escritorio);
         return ResponseEntity.ok(dto);
     }
+
+    public ResponseEntity<EscritorioResponseDTO> getEscritorio(UserDetails userDetails) {
+
+        Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Optional<Escritorio> optionalEscritorio = repository.findById(user.getIdEscritorio());
+        if (!optionalEscritorio.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Escritorio escritorio = optionalEscritorio.get();
+
+        EscritorioResponseDTO dto = new EscritorioResponseDTO(escritorio);
+        return ResponseEntity.ok(dto);
+    }
+
 }

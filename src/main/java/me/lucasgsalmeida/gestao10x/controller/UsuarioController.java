@@ -1,5 +1,6 @@
 package me.lucasgsalmeida.gestao10x.controller;
 
+import me.lucasgsalmeida.gestao10x.model.domain.departamento.DepartamentoRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.UsuarioRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.UsuarioResponseDTO;
 import me.lucasgsalmeida.gestao10x.service.UsuarioService;
@@ -19,7 +20,6 @@ public class UsuarioController {
     private UsuarioService service;
 
     @PostMapping("/new/admin")
-    @PreAuthorize("hasRole('MASTER')")
     public ResponseEntity createUsuarioMaster(@RequestBody UsuarioRequestDTO data) {
         return service.createUsuarioMaster(data);
     }
@@ -40,6 +40,11 @@ public class UsuarioController {
         return service.getUsuarioAndCliente(userDetails);
     }
 
+    @GetMapping("/get")
+    public ResponseEntity<?> getUsuarioById(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.getUsuarioById(id, userDetails);
+    }
+
     @PostMapping("/verify-token")
     public ResponseEntity<String> verifyToken(@RequestHeader("Authorization") String authorizationHeader) {
         return service.verifyToken(authorizationHeader);
@@ -49,6 +54,13 @@ public class UsuarioController {
     public ResponseEntity getAllUsuario(@AuthenticationPrincipal UserDetails userDetails) {
         return service.getAllUsuario(userDetails);
     }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateUsuario(@PathVariable Long id, @RequestBody UsuarioRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.updateUsuario(id, data, userDetails);
+    }
+
 
 }
 

@@ -32,4 +32,17 @@ public class ProjetoController {
         return service.getAllProjeto(userDetails);
     }
 
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateProjeto(@PathVariable Long id, @RequestBody ProjetoRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.updateProjeto(id, data, userDetails);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteProjeto(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.deleteProjeto(id, userDetails);
+    }
+
+
 }

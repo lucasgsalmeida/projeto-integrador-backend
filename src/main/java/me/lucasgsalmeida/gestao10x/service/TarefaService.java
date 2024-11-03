@@ -3,7 +3,6 @@ package me.lucasgsalmeida.gestao10x.service;
 import me.lucasgsalmeida.gestao10x.infra.UsuarioStateCache;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.Tarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaResponseDTO;
-import me.lucasgsalmeida.gestao10x.model.domain.tarefa.Tarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.SubTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.Usuario;

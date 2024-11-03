@@ -26,6 +26,7 @@ public class Comentario {
     private String mensagem;
 
     public Comentario(CSTRequestDTO data) {
+        this.idUsuario = data.idUsuario();
         this.mensagem = data.mensagem();
     }
 }

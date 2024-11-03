@@ -1,6 +1,7 @@
 package me.lucasgsalmeida.gestao10x.controller;
 
 import me.lucasgsalmeida.gestao10x.model.domain.departamento.DepartamentoRequestDTO;
+import me.lucasgsalmeida.gestao10x.model.domain.departamento.DepartamentoResponseDTO;
 import me.lucasgsalmeida.gestao10x.service.DepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,19 @@ public class DepartamentoController {
     public ResponseEntity getAllDepartamento(@AuthenticationPrincipal UserDetails userDetails) {
         return service.getAllDepartamento(userDetails);
     }
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateDepartamento(@PathVariable Long id, @RequestBody DepartamentoRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.updateDepartamento(id, data, userDetails);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> deleteDepartamento(@PathVariable Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.deleteDepartamento(id, userDetails);
+    }
+
 
 
 }

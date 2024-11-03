@@ -1,13 +1,17 @@
 package me.lucasgsalmeida.gestao10x.service;
 
+import jakarta.transaction.Transactional;
 import me.lucasgsalmeida.gestao10x.infra.EscritorioStateCache;
 import me.lucasgsalmeida.gestao10x.infra.UsuarioStateCache;
+import me.lucasgsalmeida.gestao10x.model.domain.departamento.DepartamentoResponseDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.escritorio.Escritorio;
 import me.lucasgsalmeida.gestao10x.model.domain.escritorio.EscritorioResponseDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.UsuarioResponseDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.*;
+import me.lucasgsalmeida.gestao10x.model.repository.DepartamentoRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.EscritorioRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.UsuarioRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +21,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UsuarioService {
@@ -42,6 +45,9 @@ public class UsuarioService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
     public ResponseEntity createUsuarioMaster(UsuarioRequestDTO data) {
 
@@ -69,7 +75,9 @@ public class UsuarioService {
         }
 
         String encPass = new BCryptPasswordEncoder().encode(data.senha());
-        Usuario users = new Usuario(userCriador.getIdEscritorio(), data.idDepartamento(), data.nome(), data.usuario(), encPass, data.role());
+        Usuario users = new Usuario(userCriador.getIdEscritorio(), data.idDepartamentos(), data.nome(), data.usuario(), encPass, data.role());
+
+        System.out.println("\n\n" + users.toString() + "\n\n");
 
         this.repository.save(users);
         return ResponseEntity.ok().build();
@@ -91,14 +99,17 @@ public class UsuarioService {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
+    @Transactional
     public ResponseEntity<?> getUsuarioAndCliente(UserDetails userDetails) {
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
         Escritorio escritorio = escritorioRepository.getById(user.getIdEscritorio());
 
         user.setSenha("**");
-        UsuarioResponseDTO responseDTO = new UsuarioResponseDTO(user);
-        EscritorioResponseDTO escritorioResponseDTO = new EscritorioResponseDTO(escritorio);
 
+        List<DepartamentoResponseDTO> departamentos = departamentoRepository.findAllById(user.getIdDepartamentos()).stream().map(DepartamentoResponseDTO::new).toList();
+        UsuarioResponseDTO responseDTO = new UsuarioResponseDTO(user, departamentos);
+
+        EscritorioResponseDTO escritorioResponseDTO = new EscritorioResponseDTO(escritorio);
         Map<String, Object> responseMap = new HashMap<>();
         responseMap.put("usuario", responseDTO);
         responseMap.put("cliente", escritorioResponseDTO);
@@ -129,9 +140,64 @@ public class UsuarioService {
         return null;
     }
 
+    @Transactional
     public ResponseEntity getAllUsuario(@AuthenticationPrincipal UserDetails userDetails) {
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
-        List<UsuarioAbstractDTO> usuarioResponseDTOList = repository.findUsuarioByEscritorio(user.getIdEscritorio());
-        return ResponseEntity.ok(usuarioResponseDTOList);
+
+        List<Usuario> usuarioResponseDTOList = repository.findUsuarioByEscritorio(user.getIdEscritorio());
+        List<UsuarioAbstractDTO> resposta = new ArrayList<>();
+
+        for (Usuario list: usuarioResponseDTOList) {
+            List<DepartamentoResponseDTO> departamentos = departamentoRepository.findAllById(list.getIdDepartamentos()).stream().map(DepartamentoResponseDTO::new).toList();
+            resposta.add(new UsuarioAbstractDTO(list, departamentos));
+        }
+
+        return ResponseEntity.ok(resposta);
     }
+
+
+    public ResponseEntity<?> getUsuarioById(Long id, UserDetails userDetails) {
+        Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Usuario procurado = repository.findUsuario(id, user.getIdEscritorio());
+        List<DepartamentoResponseDTO> departamentos = departamentoRepository.findAllById(procurado.getIdDepartamentos()).stream().map(DepartamentoResponseDTO::new).toList();
+
+        UsuarioAbstractDTO abs = new UsuarioAbstractDTO(procurado, departamentos);
+        return ResponseEntity.ok(abs);
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateUsuario(Long id, UsuarioRequestDTO data, UserDetails userDetails) {
+        Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Usuario usuario = repository.findUsuario(id, user.getIdEscritorio());
+
+        if (usuario == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        if (data.role().equals(UserRole.MASTER) && !user.getRole().equals(UserRole.MASTER)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        BeanUtils.copyProperties(data, usuario, "idEscritorio");
+
+        if (data.senha() != null && !data.senha().isEmpty()) {
+            String encPass = new BCryptPasswordEncoder().encode(data.senha());
+            usuario.setSenha(encPass);
+        }
+
+        repository.save(usuario);
+
+        return ResponseEntity.ok().build();
+    }
+
 }

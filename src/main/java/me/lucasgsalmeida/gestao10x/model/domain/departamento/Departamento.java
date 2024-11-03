@@ -31,5 +31,4 @@ public class Departamento {
         this.nome = dto.nome();
     }
 
-
 }
