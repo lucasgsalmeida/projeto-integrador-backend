@@ -21,7 +21,7 @@ services:
     depends_on:
       - db
     networks:
-      - web
+      - backendGestao
   db:
     image: postgres:16
     environment:
@@ -31,10 +31,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - web
+      - backendGestao
 
 networks:
-  web:
+  backendGestao:
     external: true
 
 volumes:
