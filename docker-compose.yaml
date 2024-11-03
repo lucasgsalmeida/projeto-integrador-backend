@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.rule=Host(`apigestao.lumendigital.com.br`)
+      - traefik.http.routers.app.entrypoints=web,websecure
+      - traefik.http.routers.app.tls.certresolver=leresolver
+      - traefik.http.routers.app.service=app
+      - traefik.http.services.app.loadbalancer.server.port=8080
+      - traefik.http.services.app.loadbalancer.passHostHeader=true
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gestao10x
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+      JWT_SECRET: my-secret-key
+    depends_on:
+      - db
+    networks:
+      - web
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: gestao10x           # Nome do banco de dados
+      POSTGRES_USER: postgres          # Nome do usuário
+      POSTGRES_PASSWORD: admin         # Senha do usuário
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
+
+volumes:
+  postgres_data:
