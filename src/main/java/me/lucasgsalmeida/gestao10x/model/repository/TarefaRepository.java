@@ -19,4 +19,6 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
 
     @Query("SELECT t FROM Tarefa t JOIN t.subTarefaList st WHERE st = :subTarefa")
     TarefaResponseDTO findTarefaByUsuario(@Param("subTarefa") SubTarefa subTarefa);
+
+
 }

@@ -137,6 +137,31 @@ public class TarefaService {
         return ResponseEntity.ok(new ArrayList<>(tarefaReturn)); // Converte de volta para List
     }
 
+    public ResponseEntity<List<TarefaResponseDTO>> findTarefasByUsuarioByAprovacao(Long idUsuario, UserDetails userDetails) {
+        Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
+        Usuario userDestino = usuarioRepository.findUsuario(idUsuario, user.getIdEscritorio());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        if (userDestino != null) {
+            if (!Objects.equals(userDestino.getIdEscritorio(), user.getIdEscritorio())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+        }
+
+        List<SubTarefa> subTarefas = subTarefaRepository.findByStatus(idUsuario);
+        Set<TarefaResponseDTO> tarefaReturn = new HashSet<>();
+
+        for (SubTarefa sub : subTarefas) {
+            TarefaResponseDTO tarefa = repository.findTarefaByUsuario(sub);
+            if (tarefa != null) {
+                tarefaReturn.add(tarefa);
+            }
+        }
+        return ResponseEntity.ok(new ArrayList<>(tarefaReturn));
+    }
 
     public ResponseEntity getAllTarefa(UserDetails userDetails) {
         Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());

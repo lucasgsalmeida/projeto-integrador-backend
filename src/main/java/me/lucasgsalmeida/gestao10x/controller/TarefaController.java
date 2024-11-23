@@ -37,4 +37,9 @@ public class TarefaController {
         return service.findTarefasByUsuario(id, userDetails);
     }
 
+    @GetMapping("/get/aprovacao")
+    public ResponseEntity findTarefasByUsuarioByAprovacao(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.findTarefasByUsuarioByAprovacao(id, userDetails);
+    }
+
 }
