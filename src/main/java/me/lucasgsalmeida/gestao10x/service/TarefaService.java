@@ -1,6 +1,8 @@
 package me.lucasgsalmeida.gestao10x.service;
 
 import me.lucasgsalmeida.gestao10x.infra.UsuarioStateCache;
+import me.lucasgsalmeida.gestao10x.model.domain.projeto.Projeto;
+import me.lucasgsalmeida.gestao10x.model.domain.projeto.ProjetoRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.Tarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaResponseDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaRequestDTO;
@@ -10,6 +12,7 @@ import me.lucasgsalmeida.gestao10x.model.repository.ComentarioRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.SubTarefaRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.TarefaRepository;
 import me.lucasgsalmeida.gestao10x.model.repository.UsuarioRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,6 +70,41 @@ public class TarefaService {
         }
         subTarefaService.createSubTarefa(subTarefa);
 
+        repository.save(tarefa);
+        return ResponseEntity.ok().build();
+
+    }
+
+    public ResponseEntity updateTarefa(Long id, TarefaRequestDTO data, UserDetails userDetails) {
+
+        Usuario user = usuarioStateCache.getUserState(userDetails.getUsername());
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        if (data == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Tarefa tarefa = repository.findTarefa(id, user.getIdEscritorio());
+
+        if (tarefa == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        BeanUtils.copyProperties(data, tarefa);
+        BeanUtils.copyProperties(data.subTarefaList(), tarefa.getSubTarefaList());
+
+        if (tarefa.getComentarios() != null) {
+            comentarioRepository.saveAll(tarefa.getComentarios());
+        }
+
+        List<SubTarefa> subTarefa = data.subTarefaList();
+        for (SubTarefa sub : subTarefa) {
+            sub.setIdEscritorio(user.getIdEscritorio());
+        }
+        subTarefaService.updateSubTarefa(subTarefa);
         repository.save(tarefa);
         return ResponseEntity.ok().build();
 

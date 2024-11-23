@@ -22,7 +22,12 @@ public class TarefaController {
         return service.createTarefa(data, userDetails);
     }
 
-    @GetMapping("/get/all")
+    @PutMapping("/update")
+    public ResponseEntity updateTarefa(@RequestParam(name="id") Long id, @RequestBody TarefaRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.updateTarefa(id, data, userDetails);
+    }
+
+        @GetMapping("/get/all")
     public ResponseEntity getAllTarefa(@AuthenticationPrincipal UserDetails userDetails) {
         return service.getAllTarefa(userDetails);
     }
