@@ -31,4 +31,16 @@ public class SubTarefaService {
     }
 
 
+    public ResponseEntity updateSubTarefa(List<SubTarefa> subTarefa) {
+        for (SubTarefa sub : subTarefa) {
+            if (sub.getComentarios() != null) {
+                comentarioRepository.saveAll(sub.getComentarios());
+            }
+        }
+
+        repository.saveAll(subTarefa);
+        return ResponseEntity.ok().build();
+    }
+
+
 }
