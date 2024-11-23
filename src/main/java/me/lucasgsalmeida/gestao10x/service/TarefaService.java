@@ -6,6 +6,7 @@ import me.lucasgsalmeida.gestao10x.model.domain.projeto.ProjetoRequestDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.Tarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaResponseDTO;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.TarefaRequestDTO;
+import me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.SubTarefa;
 import me.lucasgsalmeida.gestao10x.model.domain.usuario.Usuario;
 import me.lucasgsalmeida.gestao10x.model.repository.ComentarioRepository;
@@ -95,6 +96,13 @@ public class TarefaService {
 
         BeanUtils.copyProperties(data, tarefa);
         BeanUtils.copyProperties(data.subTarefaList(), tarefa.getSubTarefaList());
+
+        boolean todasConcluidas = data.subTarefaList().stream()
+                .allMatch(sub -> sub.getStatusTarefa() == StatusTarefa.CONCLUIDO);
+
+        if (todasConcluidas) {
+            tarefa.setStatus(StatusTarefa.CONCLUIDO);
+        }
 
         if (tarefa.getComentarios() != null) {
             comentarioRepository.saveAll(tarefa.getComentarios());
