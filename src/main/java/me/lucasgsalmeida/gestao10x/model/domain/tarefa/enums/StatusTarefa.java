@@ -4,7 +4,8 @@ public enum StatusTarefa {
 
     CONCLUIDO("1"),
     FAZENDO("2"),
-    PARA_FAZER("3");
+    PARA_FAZER("3"),
+    APROVACAO("4");
 
     private String status;
 
