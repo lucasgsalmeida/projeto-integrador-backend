@@ -22,8 +22,8 @@ public class TarefaController {
         return service.createTarefa(data, userDetails);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity updateTarefa(@RequestParam(name="id") Long id, @RequestBody TarefaRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
+    @PutMapping("/update/{id}")
+    public ResponseEntity updateTarefa(@PathVariable Long id, @RequestBody TarefaRequestDTO data, @AuthenticationPrincipal UserDetails userDetails) {
         return service.updateTarefa(id, data, userDetails);
     }
 
