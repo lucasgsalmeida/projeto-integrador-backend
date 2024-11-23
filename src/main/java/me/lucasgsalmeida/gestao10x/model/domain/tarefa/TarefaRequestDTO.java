@@ -8,5 +8,5 @@ import me.lucasgsalmeida.gestao10x.model.domain.tarefa.sub_tarefa.comentarios_su
 import java.sql.Date;
 import java.util.List;
 
-public record TarefaRequestDTO(Long idProjeto, Long id_tipoTarefa, List<SubTarefa> subTarefaList, PrioridadeTarefa prioridadeTarefa, Date dataInicio, String descricao, StatusTarefa status, List<Comentario> comentarios) {
+public record TarefaRequestDTO(Long idProjeto, Long idUsuario, Long id_tipoTarefa, List<SubTarefa> subTarefaList, PrioridadeTarefa prioridadeTarefa, Date dataInicio, String descricao, StatusTarefa status, List<Comentario> comentarios) {
 }

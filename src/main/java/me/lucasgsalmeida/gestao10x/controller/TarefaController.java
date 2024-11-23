@@ -27,9 +27,9 @@ public class TarefaController {
         return service.updateTarefa(id, data, userDetails);
     }
 
-        @GetMapping("/get/all")
-    public ResponseEntity getAllTarefa(@AuthenticationPrincipal UserDetails userDetails) {
-        return service.getAllTarefa(userDetails);
+        @GetMapping("/get/all/abertas")
+    public ResponseEntity getAllTarefaAbertas(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getAllTarefaAbertas(userDetails);
     }
 
     @GetMapping("/get/abertas")
@@ -37,9 +37,9 @@ public class TarefaController {
         return service.findTarefasAbertas(id, userDetails);
     }
 
-    @GetMapping("/get/fechadas")
-    public ResponseEntity findTarefasFechadas(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return service.findTarefasAbertas(id, userDetails);
+    @GetMapping("/get/all/fechadas")
+    public ResponseEntity getAllTarefaFechadas(@AuthenticationPrincipal UserDetails userDetails) {
+        return service.getAllTarefaFechadas(userDetails);
     }
 
 

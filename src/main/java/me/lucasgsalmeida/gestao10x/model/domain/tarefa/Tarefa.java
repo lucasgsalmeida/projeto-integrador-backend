@@ -31,6 +31,9 @@ public class Tarefa {
     @JoinColumn(table = "Projeto", name = "id_projeto", referencedColumnName = "id")
     private Long idProjeto;
 
+    @JoinColumn(table = "Usuario", name = "id_usuario", referencedColumnName = "id")
+    private Long idUsuario;
+
     @JoinColumn(table = "TipoTarefa", name = "id_tipoTarefa", referencedColumnName = "id")
     private Long id_tipoTarefa;
 
@@ -51,6 +54,7 @@ public class Tarefa {
 
     public Tarefa(TarefaRequestDTO dto) {
         this.idProjeto = dto.idProjeto();
+        this.idUsuario = dto.idUsuario();
         this.id_tipoTarefa = dto.id_tipoTarefa();
         this.subTarefaList = dto.subTarefaList();
         this.prioridadeTarefa = dto.prioridadeTarefa();
@@ -60,18 +64,4 @@ public class Tarefa {
         this.comentarios = dto.comentarios();
         }
 
-    @Override
-    public String toString() {
-        return "Tarefa{" +
-                "id=" + id +
-                ", idEscritorio=" + idEscritorio +
-                ", idProjeto=" + idProjeto +
-                ", id_tipoTarefa=" + id_tipoTarefa +
-                ", subTarefaList=" + subTarefaList +
-                ", prioridadeTarefa=" + prioridadeTarefa +
-                ", dataInicio=" + dataInicio +
-                ", descricao='" + descricao + '\'' +
-                ", status=" + status +
-                '}';
-    }
 }
