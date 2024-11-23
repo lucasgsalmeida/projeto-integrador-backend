@@ -182,7 +182,7 @@ public class TarefaService {
         Set<TarefaResponseDTO> tarefaReturn = new HashSet<>();
 
         for (SubTarefa sub : subTarefas) {
-            TarefaResponseDTO tarefa = repository.findTarefaByUsuario(sub);
+            TarefaResponseDTO tarefa = repository.findTarefaByUsuarioAbertas(sub);
             if (tarefa != null) {
                 tarefaReturn.add(tarefa);
             }
