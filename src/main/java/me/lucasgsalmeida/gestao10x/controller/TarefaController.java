@@ -32,10 +32,16 @@ public class TarefaController {
         return service.getAllTarefa(userDetails);
     }
 
-    @GetMapping("/get")
-    public ResponseEntity findTarefasByUsuario(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
-        return service.findTarefasByUsuario(id, userDetails);
+    @GetMapping("/get/abertas")
+    public ResponseEntity findTarefasAbertas(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.findTarefasAbertas(id, userDetails);
     }
+
+    @GetMapping("/get/fechadas")
+    public ResponseEntity findTarefasFechadas(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
+        return service.findTarefasAbertas(id, userDetails);
+    }
+
 
     @GetMapping("/get/aprovacao")
     public ResponseEntity findTarefasByUsuarioByAprovacao(@RequestParam(name="id") Long id, @AuthenticationPrincipal UserDetails userDetails) {
