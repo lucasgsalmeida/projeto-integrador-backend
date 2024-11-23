@@ -102,6 +102,8 @@ public class TarefaService {
 
         if (todasConcluidas) {
             tarefa.setStatus(StatusTarefa.CONCLUIDO);
+        } else {
+            tarefa.setStatus(StatusTarefa.FAZENDO);
         }
 
         if (tarefa.getComentarios() != null) {
