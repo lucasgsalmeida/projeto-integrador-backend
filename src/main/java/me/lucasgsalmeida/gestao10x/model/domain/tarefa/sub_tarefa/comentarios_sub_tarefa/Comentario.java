@@ -22,8 +22,7 @@ public class Comentario {
     @JoinColumn(table = "Usuario", name = "id_usuario", referencedColumnName = "id")
     private Long idUsuario;
 
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column
     private String mensagem;
 
     public Comentario(CSTRequestDTO data) {

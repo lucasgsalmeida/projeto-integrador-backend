@@ -41,7 +41,7 @@ public class Projeto {
 
     private String orcamentoMensal;
 
-    @Column(length = 2000) // Defina o valor que preferir
+    @Column
     private String observacao;
 
     public Projeto(ProjetoRequestDTO dto) {
