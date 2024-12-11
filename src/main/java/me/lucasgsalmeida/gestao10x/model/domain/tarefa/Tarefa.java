@@ -44,7 +44,7 @@ public class Tarefa {
 
     private Date dataInicio;
 
-    @Column(length = 2000)
+    @Lob
     private String descricao;
 
     @OneToMany

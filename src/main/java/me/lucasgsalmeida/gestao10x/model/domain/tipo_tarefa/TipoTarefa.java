@@ -30,6 +30,7 @@ public class TipoTarefa {
     @OneToMany
     private List<DepartamentoOrdem> responsavelDepartamentoProjetos;
 
+    @Lob
     private String descricao;
 
     public TipoTarefa(TipoTarefaRequestDTO dto){
