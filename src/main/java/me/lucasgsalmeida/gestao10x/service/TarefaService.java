@@ -161,16 +161,9 @@ public class TarefaService {
             }
         }
 
-        List<SubTarefa> subTarefas = subTarefaRepository.findByStatus(idUsuario);
-        Set<TarefaResponseDTO> tarefaReturn = new HashSet<>();
 
-        for (SubTarefa sub : subTarefas) {
-            TarefaResponseDTO tarefa = repository.findTarefaByUsuarioAbertas(sub);
-            if (tarefa != null) {
-                tarefaReturn.add(tarefa);
-            }
-        }
-        return ResponseEntity.ok(new ArrayList<>(tarefaReturn));
+        List<TarefaResponseDTO> lista = repository.findTarefasComSubTarefaEmAprovacao(user.getId());
+        return ResponseEntity.ok(new ArrayList<>(lista));
     }
 
     public ResponseEntity getAllTarefaAbertas(UserDetails userDetails) {

@@ -23,6 +23,11 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
     @Query("SELECT t FROM Tarefa t JOIN t.subTarefaList st WHERE st = :subTarefa and t.status != me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa.CONCLUIDO")
     TarefaResponseDTO findTarefaByUsuarioAbertas(@Param("subTarefa") SubTarefa subTarefa);
 
+    @Query("SELECT t FROM Tarefa t JOIN t.subTarefaList st " +
+            "WHERE t.idUsuario = :idUsuario " +
+            "AND st.statusTarefa = me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa.APROVACAO and t.status != me.lucasgsalmeida.gestao10x.model.domain.tarefa.enums.StatusTarefa.CONCLUIDO")
+    List<TarefaResponseDTO> findTarefasComSubTarefaEmAprovacao(@Param("idUsuario") Long idUsuario);
+
     @Query("SELECT t FROM Tarefa t JOIN t.subTarefaList st WHERE st = :subTarefa")
     TarefaResponseDTO findTarefaByUsuario(@Param("subTarefa") SubTarefa subTarefa);
 
