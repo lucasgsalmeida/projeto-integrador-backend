@@ -31,6 +31,7 @@ public class TipoTarefa {
     private List<DepartamentoOrdem> responsavelDepartamentoProjetos;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String descricao;
 
     public TipoTarefa(TipoTarefaRequestDTO dto){

@@ -23,6 +23,7 @@ public class Comentario {
     private Long idUsuario;
 
     @Lob
+    @Column(columnDefinition = "TEXT")
     private String mensagem;
 
     public Comentario(CSTRequestDTO data) {
