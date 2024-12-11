@@ -41,7 +41,7 @@ public class Projeto {
 
     private String orcamentoMensal;
 
-    @Column
+    @Column(length = 6000)
     private String observacao;
 
     public Projeto(ProjetoRequestDTO dto) {
